@@ -9,11 +9,18 @@ import (
     "fmt"
 )
 
+//Post Type
+type Post struct {
+		ID 			int  `json:"id"`
+    Title   string   `json:"title,omitempty"`
+    Body    string   `json:"body,omitempty"`
+    CreatedAt string `json:"created_at"`
+    UpdatedAt string `json:"updated_at"`
+}
+
 var posts []Post
 
 func GetPosts(w http.ResponseWriter, r *http.Request) {
-    // params := mux.Vars(r)
-    // perform a db.Query insert
     var arr_posts []Post
     rows , err := db.Query("SELECT id, title, body, created_at, updated_at from posts;")
     if(err != nil){
@@ -23,8 +30,6 @@ func GetPosts(w http.ResponseWriter, r *http.Request) {
     for rows.Next() {
 			var post Post
 			if err := rows.Scan(&post.ID, &post.Title, &post.Body, &post.CreatedAt, &post.UpdatedAt); err != nil {
-				// Check for a scan error.
-				// Query rows will be closed with defer.
 				log.Fatal(err)
 			}
 			arr_posts = append(arr_posts, post)
@@ -37,9 +42,6 @@ func CreatePost(w http.ResponseWriter, r *http.Request) {
     params := mux.Vars(r)
     var query string
     fmt.Println(params)
-    // var body_post Post
-    // _ = json.NewDecoder(r.Body).Decode(&body_post)
-    // perform a db.Query insert
     query = fmt.Sprintf(
     	"INSERT INTO posts (title, body, created_at, updated_at) VALUES('%s', '%s', NOW(), NOW())",
     	 r.FormValue("title"), r.FormValue("body"))

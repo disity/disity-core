@@ -8,15 +8,6 @@ import (
     "net/http"
 )
 
-//Post Type
-type Post struct {
-		ID 			int  `json:"id"`
-    Title   string   `json:"title,omitempty"`
-    Body    string   `json:"body,omitempty"`
-    CreatedAt string `json:"created_at"`
-    UpdatedAt string `json:"updated_at"`
-}
-
 var db *sql.DB
 
 // main function to boot up everything
